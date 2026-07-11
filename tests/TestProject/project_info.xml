@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ProjectSettings>
+  <Name value="TestProject"/>
+  <Version value="1.0.0"/>
+  <BundleIdentifier value="com.inlay.TestProject"/>
+  <PluginCode value="Itst"/>
+</ProjectSettings>

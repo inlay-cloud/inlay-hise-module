@@ -1,3 +1,5 @@
 # HISE Script API reference
-- Use hise_scripting_docs.md for actual Hise's scripting API reference
-- Use HiseSDK/HISE/hi_scripting for implementation details
+- use context7
+- For deeper understanding search examples amd implementation in ./HiseSDK
+
+do not try to compile or run tests.

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Processor Type="SynthChain" ID="BasicSynth" Bypassed="0" Gain="1.0" Balance="0.0"
+           VoiceLimit="64.0" KillFadeTime="20.0" IconColour="0" packageName=""
+           BuildVersion="650">
+  <ChildProcessors>
+    <Processor Type="MidiProcessorChain" ID="Midi Processor" Bypassed="0">
+      <ChildProcessors>
+        <Processor Type="ScriptProcessor" ID="Interface" Bypassed="0">
+          <ChildProcessors/>
+          <Content>
+            <Control type="ScriptSlider" id="UnisonoSlider" value="7.0"/>
+            <Control type="ScriptComboBox" id="Waveform Selector" value="4.0"/>
+            <Control type="ScriptSlider" id="DetuneSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="GainAttackSlider" value="110.0"/>
+            <Control type="ScriptSlider" id="GainHoldSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="GainDecaySlider" value="0.0"/>
+            <Control type="ScriptSlider" id="GainSustainSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="GainReleaseSlider" value="14217.0"/>
+            <Control type="ScriptSlider" id="Unisono Amount1" value="165.0"/>
+            <Control type="ScriptSlider" id="GainSlider" value="-2.5"/>
+            <Control type="ScriptSlider" id="KeySlider" value="0.0"/>
+            <Control type="ScriptSlider" id="GainLFOSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="GainVelocitySlider" value="0.0"/>
+            <Control type="ScriptSlider" id="FilterSustainSlider" value="-5.300000190734863"/>
+            <Control type="ScriptSlider" id="FilterDecaySlider" value="0.0"/>
+            <Control type="ScriptSlider" id="FilterHoldSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="FilterAttackSlider" value="1108.0"/>
+            <Control type="ScriptSlider" id="FilterReleaseSlider" value="1182.0"/>
+            <Control type="ScriptSlider" id="FilterCuttoffSlider" value="20000.0"/>
+            <Control type="ScriptSlider" id="FilterResonanceSlider" value="4.869999885559082"/>
+            <Control type="ScriptSlider" id="Unisono Amount5" value="1.0"/>
+            <Control type="ScriptSlider" id="FilterVelocitySlider" value="0.0"/>
+            <Control type="ScriptSlider" id="FilterLFOSlider" value="0.25"/>
+            <Control type="ScriptSlider" id="FrequencySlider" value="10.0"/>
+            <Control type="ScriptComboBox" id="Waveform Selector1" value="3.0"/>
+            <Control type="ScriptSlider" id="SmoothingSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="PhaserLowSlider" value="277.0"/>
+            <Control type="ScriptSlider" id="PhaserHighSlider" value="3245.0"/>
+            <Control type="ScriptSlider" id="PhaserSpeedSlider" value="0.9200000166893005"/>
+            <Control type="ScriptSlider" id="PhaserMixSlider" value="1.0"/>
+            <Control type="ScriptButton" id="PhaserButton" value="0.0"/>
+            <Control type="ScriptSlider" id="DriveAmountSlider" value="0.2700000107288361"/>
+            <Control type="ScriptSlider" id="DriveMixSlider" value="1.0"/>
+            <Control type="ScriptButton" id="DriveButton" value="1.0"/>
+            <Control type="ScriptSlider" id="ConvolutionDrySlider" value="-100.0"/>
+            <Control type="ScriptSlider" id="ConvolutionWetSlider" value="-4.900000095367432"/>
+            <Control type="ScriptAudioWaveform" id="ConvolutionWaveform" value="0.0"
+                     data="" rangeStart="0" rangeEnd="0"/>
+            <Control type="ScriptButton" id="ConvolutionButton" value="1.0"/>
+            <Control type="ScriptSlider" id="lowEqSlider" value="-5.599999904632568"/>
+            <Control type="ScriptSlider" id="midEqSlider" value="0.8999999761581421"/>
+            <Control type="ScriptButton" id="EQButton" value="0.0"/>
+            <Control type="ScriptSlider" id="highEqSlider" value="4.699999809265137"/>
+            <Control type="ScriptSlider" id="LimiterSlider" value="2.700000047683716"/>
+            <Control type="ScriptButton" id="LimiterButton" value="0.0"/>
+            <Control type="ScriptSlider" id="DelayRightSlider" value="10.0"/>
+            <Control type="ScriptSlider" id="DelayLeftSlider" value="12.0"/>
+            <Control type="ScriptButton" id="DelayButton" value="1.0"/>
+            <Control type="ScriptSlider" id="DelayFeedbackSlider" value="0.7699999809265137"/>
+            <Control type="ScriptSlider" id="DelayMixSlider" value="0.0"/>
+            <Control type="ScriptSlider" id="ReverbSizeSlider" value="0.9100000262260437"/>
+            <Control type="ScriptSlider" id="ReverbDampingSlider" value="0.8899999856948853"/>
+            <Control type="ScriptSlider" id="ReverbWetSlider" value="0.550000011920929"/>
+          </Content>
+          <UIData Source="BasicSynthUIData"/>
+        </Processor>
+      </ChildProcessors>
+    </Processor>
+    <Processor Type="ModulatorChain" ID="GainModulation" Bypassed="0" Intensity="1.0">
+      <ChildProcessors/>
+    </Processor>
+    <Processor Type="ModulatorChain" ID="PitchModulation" Bypassed="1" Intensity="0.0">
+      <ChildProcessors/>
+    </Processor>
+    <Processor Type="EffectChain" ID="FX" Bypassed="0">
+      <ChildProcessors/>
+    </Processor>
+    <Processor Type="GlobalModulatorContainer" ID="Global Modulator Container"
+               Bypassed="0" Gain="0.25" Balance="0.0" VoiceLimit="256.0" KillFadeTime="20.0"
+               IconColour="0">
+      <ChildProcessors>
+        <Processor Type="MidiProcessorChain" ID="Midi Processor" Bypassed="0">
+          <ChildProcessors/>
+        </Processor>
+        <Processor Type="ModulatorChain" ID="Global Modulators" Bypassed="0" Intensity="1.0">
+          <ChildProcessors>
+            <Processor Type="LFO" ID="LFO Modulator" Bypassed="0" Intensity="1.0" Bipolar="0"
+                       Frequency="10.0" FadeIn="0.0" WaveformType="3.0" Legato="1.0"
+                       TempoSync="0.0" SmoothingTime="0.0" LoopEnabled="1.0" PhaseOffset="0.0"
+                       SyncToMasterClock="0.0" IgnoreNoteOn="0.0" CustomWaveform=""
+                       StepData="4.......">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="LFO Intensity Mod" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="LFO Frequency Mod" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+              </ChildProcessors>
+            </Processor>
+          </ChildProcessors>
+        </Processor>
+        <Processor Type="ModulatorChain" ID="PitchModulation" Bypassed="0" Intensity="0.0">
+          <ChildProcessors/>
+        </Processor>
+        <Processor Type="EffectChain" ID="FX" Bypassed="0">
+          <ChildProcessors/>
+        </Processor>
+      </ChildProcessors>
+      <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+      <MatrixData/>
+    </Processor>
+    <Processor Type="SynthGroup" ID="Syntesizer Group" Bypassed="0" Gain="1.0"
+               Balance="0.0" VoiceLimit="36.0" KillFadeTime="20.0" IconColour="0"
+               EnableFM="0.0" CarrierIndex="-1.0" ModulatorIndex="-1.0" UnisonoVoiceAmount="7.0"
+               UnisonoDetune="0.0" UnisonoSpread="1.0" KillSecondVoices="0.0">
+      <ChildProcessors>
+        <Processor Type="MidiProcessorChain" ID="Midi Processor" Bypassed="0">
+          <ChildProcessors/>
+        </Processor>
+        <Processor Type="ModulatorChain" ID="GainModulation" Bypassed="0" Intensity="1.0">
+          <ChildProcessors>
+            <Processor Type="Velocity" ID="VelocityGain" Bypassed="0" Intensity="0.0"
+                       UseTable="1.0" Inverted="0.0" DecibelMode="0.0" VelocityTableData="24...............vO...f+....9CoYloO">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="GlobalTimeVariantModulator" ID="Gain LFO" Bypassed="0"
+                       Intensity="0.0" UseTable="0" Inverted="0" TableData="" Connection="Global Modulator Container:LFO Modulator">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="KeyNumber" ID="GainKey" Bypassed="0" Intensity="0.0" MidiTableData="24..........9C...vO...f+.........vO">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="AHDSR" ID="Gain Envelope" Bypassed="0" Monophonic="0.0"
+                       Retrigger="1.0" Intensity="1.0" AttackCurve="0.0" DecayCurve="0.0"
+                       Attack="110.0" AttackLevel="0.0" Hold="0.0" Decay="1.0" Sustain="0.0"
+                       Release="14217.0" EcoMode="1.0">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="Attack Time" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Attack Level" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Decay Time" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Sustain Level" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Release Time" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+              </ChildProcessors>
+            </Processor>
+          </ChildProcessors>
+        </Processor>
+        <Processor Type="ModulatorChain" ID="PitchModulation" Bypassed="0" Intensity="0.0">
+          <ChildProcessors/>
+        </Processor>
+        <Processor Type="EffectChain" ID="FX" Bypassed="0">
+          <ChildProcessors>
+            <Processor Type="PolyphonicFilter" ID="Polyphonic Filter" Bypassed="0" Gain="0.0"
+                       Frequency="20000.0" Q="4.869999885559082" Mode="6.0" Quality="1.00992e8"
+                       BipolarIntensity="0.0">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="Frequency Modulation" Bypassed="0"
+                           Intensity="1.0">
+                  <ChildProcessors>
+                    <Processor Type="Velocity" ID="Velocity Modulator" Bypassed="0" Intensity="0.0"
+                               UseTable="1.0" Inverted="0.0" DecibelMode="0.0" VelocityTableData="24...............vO...f+....9CfzLMO">
+                      <ChildProcessors/>
+                    </Processor>
+                    <Processor Type="GlobalTimeVariantModulator" ID="Filter LFO" Bypassed="0"
+                               Intensity="0.25" UseTable="0" Inverted="0" TableData="" Connection="Global Modulator Container:LFO Modulator">
+                      <ChildProcessors/>
+                    </Processor>
+                    <Processor Type="AHDSR" ID="FilterEnvelope" Bypassed="0" Monophonic="0.0"
+                               Retrigger="1.0" Intensity="1.0" AttackCurve="0.0" DecayCurve="0.0"
+                               Attack="1108.0" AttackLevel="0.0" Hold="0.0" Decay="1.0" Sustain="-5.300000190734863"
+                               Release="1182.0" EcoMode="1.0">
+                      <ChildProcessors>
+                        <Processor Type="ModulatorChain" ID="Attack Time" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                        <Processor Type="ModulatorChain" ID="Attack Level" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                        <Processor Type="ModulatorChain" ID="Decay Time" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                        <Processor Type="ModulatorChain" ID="Sustain Level" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                        <Processor Type="ModulatorChain" ID="Release Time" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                      </ChildProcessors>
+                    </Processor>
+                  </ChildProcessors>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Gain Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Bipolar Freq Modulation" Bypassed="0"
+                           Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Q Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+              </ChildProcessors>
+            </Processor>
+            <Processor Type="SimpleGain" ID="AmpGain" Bypassed="0" Gain="-2.5" Delay="0.0"
+                       Width="100.0" Balance="0.0" InvertPolarity="0.0">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="Gain Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Delay Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Width Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Pan Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+              </ChildProcessors>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="Saturator" ID="Saturator" Bypassed="1" Saturation="0.2700000107288361"
+                       WetAmount="1.0" PreGain="0.0" PostGain="0.0">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="Saturation Modulation" Bypassed="0"
+                           Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+              </ChildProcessors>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="PhaseFX" ID="Phaser" Bypassed="0" Frequency1="277.0" Frequency2="3245.0"
+                       Feedback="0.699999988079071" Mix="1.0">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="Phase Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors>
+                    <Processor Type="LFO" ID="PhaseLFO" Bypassed="0" Intensity="1.0" ModulationMode="0"
+                               Frequency="0.9200000166893005" FadeIn="1000.0" WaveformType="1.0"
+                               Legato="1.0" TempoSync="0.0" SmoothingTime="5.0" LoopEnabled="1.0"
+                               PhaseOffset="0.0" SyncToMasterClock="0.0" IgnoreNoteOn="0.0"
+                               CustomWaveform="" StepData="64.lYlY+zLyL4iYlY1OMyLy8zLyL6iYlY1OZlYl9nYlY7SyLyzOMyLS9zLyL6iYlY1OMyLS9zLyL8C...vOyLyL+.">
+                      <ChildProcessors>
+                        <Processor Type="ModulatorChain" ID="LFO Intensity Mod" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                        <Processor Type="ModulatorChain" ID="LFO Frequency Mod" Bypassed="0" Intensity="1.0">
+                          <ChildProcessors/>
+                        </Processor>
+                      </ChildProcessors>
+                    </Processor>
+                  </ChildProcessors>
+                </Processor>
+              </ChildProcessors>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="Convolution" ID="Convolution Reverb" Bypassed="1" DryGain="-100.0"
+                       WetGain="-4.90000057220459" Latency="0.0" ImpulseLength="1.0"
+                       ProcessInput="1.0" UseBackgroundThread="0.0" Predelay="0.0" HiCut="20000.0"
+                       Damping="0.0" FFTType="0.0" FileName="" min="0" max="0" loopStart="0"
+                       loopEnd="0">
+              <ChildProcessors/>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="Delay" ID="Delay2" Bypassed="1" DelayTimeLeft="10.0" DelayTimeRight="12.0"
+                       FeedbackLeft="0.7699999809265137" FeedbackRight="0.7699999809265137"
+                       LowPassFreq="20000.0" HiPassFreq="40.0" Mix="0.0" TempoSync="1.0">
+              <ChildProcessors/>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="SimpleReverb" ID="Simple Reverb" Bypassed="1" RoomSize="0.9100000262260437"
+                       Damping="0.8899999856948853" WetLevel="0.550000011920929" DryLevel="0.449999988079071"
+                       Width="1.0" FreezeMode="0.1000000014901161">
+              <ChildProcessors/>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="CurveEq" ID="Parametriq EQ" Bypassed="0" NumFilters="3"
+                       Band0="-5.599999904632568" Band1="303.0" Band2="0.8899999856948853"
+                       Band3="1.0" Band4="2.0" Band5="0.900000274181366" Band6="1085.170043945312"
+                       Band7="0.4199999868869781" Band8="1.0" Band9="4.0" Band10="4.699999809265137"
+                       Band11="5841.0" Band12="0.5099999904632568" Band13="1.0" Band14="3.0"
+                       FFTEnabled="0">
+              <ChildProcessors/>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="Dynamics" ID="Dynamics" Bypassed="0" GateEnabled="0.0"
+                       GateThreshold="0.0" GateAttack="1.0" GateRelease="100.0" CompressorEnabled="0.0"
+                       CompressorThreshold="0.0" CompressorRatio="1.0" CompressorAttack="10.0"
+                       CompressorRelease="100.0" LimiterEnabled="1.0" LimiterThreshold="-2.700000047683716"
+                       LimiterAttack="2.940000057220459" LimiterRelease="53.59999847412109"
+                       CompressorMakeup="0.0" LimiterMakeup="0.0">
+              <ChildProcessors/>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+            <Processor Type="SimpleGain" ID="Makeup" Bypassed="0" Gain="2.700000047683716"
+                       Delay="0.0" Width="100.0" Balance="0.0" InvertPolarity="0.0">
+              <ChildProcessors>
+                <Processor Type="ModulatorChain" ID="Gain Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Delay Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Width Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+                <Processor Type="ModulatorChain" ID="Pan Modulation" Bypassed="0" Intensity="1.0">
+                  <ChildProcessors/>
+                </Processor>
+              </ChildProcessors>
+              <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+            </Processor>
+          </ChildProcessors>
+        </Processor>
+        <Processor Type="ModulatorChain" ID="Detune Mod" Bypassed="0" Intensity="1.0">
+          <ChildProcessors/>
+        </Processor>
+        <Processor Type="ModulatorChain" ID="Spread Mod" Bypassed="0" Intensity="1.0">
+          <ChildProcessors/>
+        </Processor>
+        <Processor Type="WaveSynth" ID="Waveform Generator" Bypassed="0" Gain="0.25"
+                   Balance="0.0" VoiceLimit="256.0" KillFadeTime="20.0" IconColour="0"
+                   OctaveTranspose1="0.0" SemiTones1="0.0" OctaveTranspose2="0.0"
+                   SemiTones2="0.0" Detune1="0.0" Detune2="0.0" WaveForm1="4.0"
+                   WaveForm2="3.0" Pan1="0.0" Pan2="0.0" Mix="0.5" EnableSecondOscillator="0.0"
+                   PulseWidth1="0.5" PulseWidth2="0.5" HardSync="0.0">
+          <ChildProcessors>
+            <Processor Type="MidiProcessorChain" ID="Midi Processor" Bypassed="0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="GainModulation" Bypassed="0" Intensity="1.0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="PitchModulation" Bypassed="0" Intensity="0.0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="EffectChain" ID="FX" Bypassed="0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="Mix Modulation" Bypassed="0" Intensity="1.0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="Osc2 Pitch Modulation" Bypassed="0"
+                       Intensity="0.0">
+              <ChildProcessors/>
+            </Processor>
+          </ChildProcessors>
+          <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+        </Processor>
+      </ChildProcessors>
+      <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+    </Processor>
+  </ChildProcessors>
+  <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+  <macro_controls>
+    <macro name="Macro 1" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 2" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 3" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 4" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 5" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 6" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 7" value="0.0" midi_cc="-1"/>
+    <macro name="Macro 8" value="0.0" midi_cc="-1"/>
+  </macro_controls>
+  <MidiAutomation/>
+  <MPEData Enabled="0"/>
+</Processor>

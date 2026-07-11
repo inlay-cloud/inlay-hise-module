@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ProjectSettings>
+  <Name value="BasicSynth" type="TEXT" description="Project Name"/>
+  <Version value="0.1.0" type="TEXT" description="Project version"/>
+  <Description value="" type="TEXT" description="Project description"/>
+  <BundleIdentifier value="com.inlay.BasicSynthExample" type="TEXT" description="Bundle Identifier(eg.com.myCompany.bundle)"/>
+  <PluginCode value="Abcd" type="TEXT" description="a 4 character ID code(eg. 'Abcd')"/>
+  <EmbedAudioFiles value="No" type="LIST" description="Embed Audio files in plugin"
+                   options="Yes&#10;No"/>
+  <AdditionalDspLibraries value="" type="TEXT" description="comma separated list of all static dsp factory classes"/>
+  <WindowsStaticLibFolder value="" type="TEXT" description="Windows static library folder"/>
+  <OSXStaticLibs value="" type="TEXT" description="Additional static libs (OSX only)"/>
+  <ExtraDefinitionsWindows value="" type="TEXT" description="Extra preprocessor definitions for Windows"/>
+  <ExtraDefinitionsOSX value="" type="TEXT" description="Extra preprocessor definitions for OSX"/>
+  <ExtraDefinitionsIOS value="" type="TEXT" description="Extra preprocessor definitions for IOS"/>
+  <AppGroupID value="group.inlay.basicSynthExample" type="TEXT" description="App Group ID (use this for shared resources on iOS"/>
+  <EmbedImageFiles value="Yes"/>
+  <SupportFullDynamicsHLAC value="No"/>
+  <ExtraDefinitionsLinux value=""/>
+  <RedirectSampleFolder value=""/>
+  <AAXCategoryFX value="AAX_ePlugInCategory_Modulation"/>
+  <SupportMonoFX value="No"/>
+  <EnableMidiInputFX value="No"/>
+  <VST3Support value="No"/>
+  <UseRawFrontend value="No"/>
+  <ExpansionType value="Disabled"/>
+  <EncryptionKey value="1234"/>
+  <ExtraDefinitionsNetworkDll value=""/>
+  <VST3Category value=""/>
+  <EnableMidiOut value="No"/>
+  <EnableSoundGeneratorsFX value="No"/>
+  <LinkExpansionsToProject value="No"/>
+  <ReadOnlyFactoryPresets value="No"/>
+  <ForceStereoOutput value="No"/>
+  <AdminPermissions value="No"/>
+  <EmbedUserPresets value="Yes"/>
+  <OverwriteOldUserPresets value="No"/>
+  <EnableGlobalPreprocessor value="No"/>
+  <UseGlobalAppDataFolderWindows value="No"/>
+  <UseGlobalAppDataFolderMacOS value="No"/>
+  <DefaultUserPreset value=""/>
+  <CompileWithPerfetto value="No"/>
+  <CompileWithDebugSymbols value="No"/>
+  <IncludeLorisInFrontend value="No"/>
+  <ProjectType value="Instrument"/>
+</ProjectSettings>

@@ -1,11 +1,10 @@
-/Binaries
-/Samples
-/DspNetworks/Binaries/
+Binaries
+Samples
 
 # User data
-/Presets
-/UserPresets
-/PooledResources/*.dat
+Presets
+UserPresets
+PooledResources/*.dat
 
 /HiseSDK
 
