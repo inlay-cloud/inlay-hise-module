@@ -86,9 +86,15 @@ if [[ "$src_type" != "tree" ]]; then
 fi
 
 unlocker_path="${SRC_DIR%/}/Unlocker.js"
+release_workflow_path=".github/workflows/release.yml"
 
 if ! unlocker_source="$(git show "${SRC_REF}:${unlocker_path}" 2>/dev/null)"; then
     echo "Error: '$unlocker_path' does not exist in source branch '$SRC_REF'." >&2
+    exit 1
+fi
+
+if ! release_workflow_blob="$(git rev-parse "${SRC_REF}:${release_workflow_path}" 2>/dev/null)"; then
+    echo "Error: '$release_workflow_path' does not exist in source branch '$SRC_REF'." >&2
     exit 1
 fi
 
@@ -151,6 +157,17 @@ if ! git cat-file -e "${dist_commit}^{commit}" 2>/dev/null; then
     echo "Error: git subtree split did not produce a valid commit." >&2
     exit 1
 fi
+
+echo "Adding '$release_workflow_path' to generated distribution commit..."
+dist_index="$(mktemp)"
+rm -f "$dist_index"
+trap 'rm -f "$dist_index"' EXIT
+
+GIT_INDEX_FILE="$dist_index" git read-tree "$dist_commit"
+GIT_INDEX_FILE="$dist_index" git update-index --add \
+    --cacheinfo "100644,$release_workflow_blob,$release_workflow_path"
+dist_tree="$(GIT_INDEX_FILE="$dist_index" git write-tree)"
+dist_commit="$(git commit-tree "$dist_tree" -p "$dist_commit" -m 'Include release workflow')"
 
 echo "Updating local branch '$DIST_BRANCH' to $dist_commit..."
 git branch -f "$DIST_BRANCH" "$dist_commit"
