@@ -1,0 +1,35 @@
+name: Release Inlay
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out tagged commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check out release scripts
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          path: .release-automation
+
+      - name: Validate and package release
+        id: release
+        run: ./.release-automation/scripts/prepare-release.sh
+
+      - name: Create GitHub release
+        if: steps.release.outputs.eligible == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: ./.release-automation/scripts/create-release.sh
