@@ -173,7 +173,7 @@ echo "Updating local branch '$DIST_BRANCH' to $dist_commit..."
 git branch -f "$DIST_BRANCH" "$dist_commit"
 
 echo "Tagging generated commit $dist_commit as '$dist_tag'..."
-git tag "$dist_tag" "$dist_commit"
+git tag --no-sign "$dist_tag" "$dist_commit"
 
 if [[ "$push" == true ]]; then
     echo "Pushing '$DIST_BRANCH' to '$REMOTE/$DIST_BRANCH' with force-with-lease..."
