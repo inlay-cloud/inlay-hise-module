@@ -26,7 +26,7 @@ The unlocker exposes three states through `statusBroadcaster`:
 1. On `startup()`, no saved identity leads to `activation_required`; a saved identity with no valid local access leads to `unlocking`; a valid access token leads directly to `unlocked`.
 2. In `activation_required`, the user initiates activation. The module asks the Inlay server to create an activation session, opens the returned browser flow, and polls the server until that flow is complete.
 3. When activation succeeds, or when a saved identity needs access, the Inlay server evaluates the account's entitlement and returns current access. The module saves the returned identity and access token locally, validates the access token again, and only then broadcasts `unlocked`.
-4. After unlocking, the module schedules a refresh check. It refreshes access when the locally validated token is more than one day old. A temporary refresh failure leaves a still-valid token in place; a rejected identity returns the plugin to `activation_required`.
+4. After unlocking, the module schedules a refresh check. The signed access token's optional `r` claim sets the refresh age in whole days; `-1` disables age-based refresh, while a missing or invalid value defaults to one day. A temporary refresh failure leaves a still-valid token in place; a rejected identity returns the plugin to `activation_required`.
 
 The server is the authority for activation and entitlement decisions. The plugin does not trust a server response blindly: it uses the company public key to validate the returned access token locally before enabling protected functionality.
 

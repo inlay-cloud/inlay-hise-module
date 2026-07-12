@@ -6,7 +6,7 @@ namespace InlayUnlocker {
     // The plugin is unlocked.
     const var STATUS_UNLOCKED = "unlocked";
     
-    const var moduleVersion = "HISE-3.0.4";
+    const var moduleVersion = "HISE-3.0.5";
     const var oneDay = 24 * 60 * 60 * 1000;
     const var ulidLength = 26;
     const var inlayProductIDProp = "InlayProductID";
@@ -44,7 +44,6 @@ namespace InlayUnlocker {
             completeExpansionActivationPollTimer: Engine.createTimerObject(),
             oneTimeTimer: Engine.createTimerObject(),
 
-            accessRefreshAge: oneDay,
             instanceID: instanceID,
 
             apiUrl: apiUrl,
@@ -645,7 +644,13 @@ namespace InlayUnlocker {
                     return;
                 }
 
-                if (this.accessClaims.getAgeMs() > this.accessRefreshAge) {
+                if (this.accessClaims.refreshAfterDays == -1) {
+                    log("access token refresh disabled");
+                    return;
+                }
+
+                var refreshAgeMs = this.accessClaims.refreshAfterDays * oneDay;
+                if (this.accessClaims.getAgeMs() > refreshAgeMs) {
                     log("access token needs to be refreshed");
                     this.requestAccessToRefresh();
                     return;
@@ -870,14 +875,14 @@ namespace InlayUnlocker {
                 var fieldsCount = 0;
                 var key;
                 for (key in claimsJson) {
-                    if (key != "p" && key != "d" && key != "e" && key != "i" && key != "u") {
+                    if (key != "p" && key != "d" && key != "e" && key != "i" && key != "u" && key != "r") {
                         log("parseSignedAccessToken: unexpected claims field");
                         return undefined;
                     }
                     fieldsCount += 1;
                 }
 
-                if (fieldsCount != 5 && fieldsCount != 4) {
+                if (fieldsCount < 4 || fieldsCount > 6) {
                     log("parseSignedAccessToken: invalid claims fields count");
                     return undefined;
                 }
@@ -886,12 +891,24 @@ namespace InlayUnlocker {
             },
 
             makeAccessTokenClaimsObjFromJSON: function(claimsJson) {
+                var refreshAfterDays = claimsJson["r"];
+                var validRefreshAfterDays = typeof(refreshAfterDays) == "number"
+                    && !Math.isnan(refreshAfterDays)
+                    && !Math.isinf(refreshAfterDays)
+                    && refreshAfterDays >= -1
+                    && refreshAfterDays == Math.floor(refreshAfterDays);
+
+                if (!validRefreshAfterDays) {
+                    refreshAfterDays = 1;
+                }
+
                 return {
                     productIdSuff: claimsJson["p"],
                     deviceId: claimsJson["d"],
                     issuedAt: claimsJson["i"] * 1000,
                     expiresAt: claimsJson["e"] * 1000,
                     userEmail: claimsJson["u"],
+                    refreshAfterDays: refreshAfterDays,
                     getAgeMs: function () {
                         return timeSince(this.issuedAt);
                     }

@@ -33,6 +33,7 @@ namespace InlayTest {
         
         totals.add(test("tokenValidator.parseSignedAccessToken", parseSignedAccessToken));
         totals.add(test("tokenValidator.validateAccessTokenClaims", validateAccessTokenClaims));
+        totals.add(test("tokenValidator.makeAccessTokenClaimsObjFromJSON", makeAccessTokenClaimsObjFromJSON));
         totals.add(test("tokenValidator.loadAndValidateAccessToken", loadAndValidateAccessToken));
         totals.add(test("unlocker.startup", unlockerStartup));
         totals.add(test("unlocker.logout", unlockerLogout));
@@ -40,6 +41,7 @@ namespace InlayTest {
         totals.add(test("unlocker.saveOkAuthResponse", unlockerSaveOkAuthResponse));
         totals.add(test("unlocker.setMetaData", unlockerSetMetaData));
         totals.add(test("unlocker.requestAccessToRefresh", unlockerRequestAccessToRefresh));
+        totals.add(test("unlocker.checkRefresh", unlockerCheckRefresh));
         totals.add(test("unlocker.requestAccessToUnlock", unlockerRequestAccessToUnlock));
         totals.add(test("unlocker.retryUnlocking", unlockerRetryUnlocking));
         totals.add(test("unlocker.checkExpansion", unlockerCheckExpansion));
@@ -210,6 +212,28 @@ namespace InlayTest {
             };
             local co = validator.makeAccessTokenClaimsObjFromJSON(c);
             t.assertEqual("access token claims", validator.validateAccessTokenClaims(co), false);
+        }
+    }
+
+    inline function makeAccessTokenClaimsObjFromJSON(t) {
+        local validator = InlayUnlocker.createTokenValidator("", "", "");
+
+        local cases = [
+            { name: "missing defaults to one day", input: undefined, expected: 1 },
+            { name: "positive integer", input: 3, expected: 3 },
+            { name: "zero", input: 0, expected: 0 },
+            { name: "minus one", input: -1, expected: -1 },
+            { name: "fraction defaults to one day", input: 0.5, expected: 1 },
+            { name: "string defaults to one day", input: "3", expected: 1 },
+            { name: "below minus one defaults to one day", input: -2, expected: 1 },
+            { name: "positive infinity defaults to one day", input: 1 / 0, expected: 1 },
+            { name: "negative infinity defaults to one day", input: -1 / 0, expected: 1 },
+        ];
+
+        for (testCase in cases) {
+            t.subName = testCase.name;
+            local claims = validator.makeAccessTokenClaimsObjFromJSON({ "r": testCase.input });
+            t.assertEqual("claims.refreshAfterDays", claims.refreshAfterDays, testCase.expected);
         }
     }
 
@@ -811,6 +835,63 @@ namespace InlayTest {
             t.assertEqual("unlocker.savedResponses.length", unlocker.savedResponses.length, 1);
             t.assertEqual("unlocker.savedResponses[0].accessToken", unlocker.savedResponses[0].accessToken, "new-access-token");
             t.assertEqual("unlocker.savedResponses[0].idToken", unlocker.savedResponses[0].idToken, "new-id-token");
+        }
+    }
+
+    inline function unlockerCheckRefresh(t) {
+        local createCheckRefreshTestUnlocker = function(refreshAfterDays, ageMs) {
+            var unlocker = InlayUnlocker.create({
+                productId: "refresh-check-test-product-id",
+                publicKey: "",
+                apiUrl: "",
+            });
+
+            unlocker.accessClaims = {
+                refreshAfterDays: refreshAfterDays,
+                getAgeMs: function[ageMs]() {
+                    return ageMs;
+                },
+            };
+            unlocker.refreshCalls = 0;
+            unlocker.requestAccessToRefresh = function() {
+                this.refreshCalls += 1;
+            };
+            return unlocker;
+        };
+
+        t.subName = "refreshes after configured days";
+        {
+            local unlocker = createCheckRefreshTestUnlocker(2, 2 * 24 * 60 * 60 * 1000 + 1);
+            unlocker.checkRefresh();
+            t.assertEqual("unlocker.refreshCalls", unlocker.refreshCalls, 1);
+        }
+
+        t.subName = "stays fresh at configured days";
+        {
+            local unlocker = createCheckRefreshTestUnlocker(2, 2 * 24 * 60 * 60 * 1000);
+            unlocker.checkRefresh();
+            t.assertEqual("unlocker.refreshCalls", unlocker.refreshCalls, 0);
+        }
+
+        t.subName = "minus one never refreshes";
+        {
+            local unlocker = createCheckRefreshTestUnlocker(-1, 30 * 24 * 60 * 60 * 1000);
+            unlocker.checkRefresh();
+            t.assertEqual("unlocker.refreshCalls", unlocker.refreshCalls, 0);
+        }
+
+        t.subName = "zero refreshes positive-age token";
+        {
+            local unlocker = createCheckRefreshTestUnlocker(0, 1);
+            unlocker.checkRefresh();
+            t.assertEqual("unlocker.refreshCalls", unlocker.refreshCalls, 1);
+        }
+
+        t.subName = "zero does not refresh zero-age token";
+        {
+            local unlocker = createCheckRefreshTestUnlocker(0, 0);
+            unlocker.checkRefresh();
+            t.assertEqual("unlocker.refreshCalls", unlocker.refreshCalls, 0);
         }
     }
 
@@ -2081,6 +2162,37 @@ namespace InlayTest {
     }
 
     inline function parseSignedAccessToken(t) {
+        local publicKey = "10001,a4390d557ff756d07678aead66f1b0e44c4ab2c7a0d4e5312964e9b0ab328d2bc40f2c177318e13fecc21fb738c0675d979e5095908cdde40fbd5a5d46acd7bc4f101c4dd9f38e46425c62de23ee7f0afa679d3aab926c9e3c7815ecf13e751afa5f9fd6951fe9230a9532fb5c10de20e21898375d893da8de27a2d447a9e23ab347e6107934a7eb62c527226ebea87bd8f1d387b78a044006eead3c6e113e4db8f37f294df1ad76ceada6599d17403fa2e1c9723587f81d01e8fcbd106c6c4fb5380871205e4601abd2ffbcdaf064c185b033b87c1a8f1075e85613244127c2ca4d1f58ae727b4d7d1fa04d161f2e3a089b2b3a795fc996dbf8917b70773369";
+        local privateKey = "8f61d0a689e7e640746fc1f35c224193d29895a77e60e30b1d5d223c41fd0d0cdd4d71edb76c4d9e8694a7244dc48f7b43d9d1fa040f39dcd97135e8a2c05e4be7abe54a83b506cf89392889534df4561d7341efebc51858bfeb0919ab3820fec103a486b204fe84bdc4ae92903b99f593f26d5449b27dc766cfac77336abc3da59d9e2c567414d244fc73e26af506a19e06d2ee5dc5a000246a52ca45e4ac074cfac0c24bdc47ecd343605b348d2e4d8f3939b207019265602be3397903c125bd926251950ce6558c240d4a69f5759b1bf896278a69f383a4d6a029b4e03092f9b3b85cea6653c5f426c837b22b8ac1fed41bb064feed1adecb0c9f34da101,a4390d557ff756d07678aead66f1b0e44c4ab2c7a0d4e5312964e9b0ab328d2bc40f2c177318e13fecc21fb738c0675d979e5095908cdde40fbd5a5d46acd7bc4f101c4dd9f38e46425c62de23ee7f0afa679d3aab926c9e3c7815ecf13e751afa5f9fd6951fe9230a9532fb5c10de20e21898375d893da8de27a2d447a9e23ab347e6107934a7eb62c527226ebea87bd8f1d387b78a044006eead3c6e113e4db8f37f294df1ad76ceada6599d17403fa2e1c9723587f81d01e8fcbd106c6c4fb5380871205e4601abd2ffbcdaf064c185b033b87c1a8f1075e85613244127c2ca4d1f58ae727b4d7d1fa04d161f2e3a089b2b3a795fc996dbf8917b70773369";
+        local makeSignedToken = function[privateKey](claimsText) {
+            var encryptedClaims = FileSystem.encryptWithRSA(claimsText, privateKey);
+            var encryptedHash = FileSystem.encryptWithRSA(claimsText.hash(), privateKey);
+            return encryptedClaims + "." + encryptedHash;
+        };
+
+        t.subName = "valid six fields preserve refresh claim";
+        {
+            local validator = InlayUnlocker.createTokenValidator(publicKey, "", "");
+            local claimsText = '{"p":"product","d":"device","e":1712345678,"i":1712341234,"u":"user@example.com","r":3}';
+            local claims = validator.parseSignedAccessToken(makeSignedToken(claimsText));
+
+            t.assertEqual("claims[p]", claims["p"], "product");
+            t.assertEqual("claims[d]", claims["d"], "device");
+            t.assertEqual("claims[e]", claims["e"], 1712345678);
+            t.assertEqual("claims[i]", claims["i"], 1712341234);
+            t.assertEqual("claims[u]", claims["u"], "user@example.com");
+            t.assertEqual("claims[r]", claims["r"], 3);
+        }
+
+        t.subName = "signed token rejects unknown seventh field";
+        {
+            local validator = InlayUnlocker.createTokenValidator(publicKey, "", "");
+            local claimsText = '{"p":"product","d":"device","e":1712345678,"i":1712341234,"u":"user@example.com","r":3,"x":true}';
+            local claims = validator.parseSignedAccessToken(makeSignedToken(claimsText));
+
+            t.assertEqual("claims are undefined", claims == undefined, true);
+        }
+
         t.subName = "fixture mutation";
         {
             local validator = InlayUnlocker.createTokenValidator("10001,dac1806e0ff8a533b6f9d8176c7c8f764b5b617152e6ddbd0772be130bc246bdf2521e475553edb0e206a4a958b1f003e8b7eee606257e52bb5c285626cb6461f015d4dacb84286c2824698a47e0fec6fed187288590140b9ded672b5aae8e31d96aba99e9282b744914735eb59c7119aa45849cb09dd7b42a7fd44c6867c90eaea637c30de5e6042d89f5c91b3eed77e5f47ce43cc1c9d8c612247e020390b3c6234051c4c320b69430141c714c9312e1f22d7dcc0dd1ddf348a2ca34551de0818d319f65908a47259cd0a842adcbf92861f1f76fc3fa255159cd3d729b0b46e24cfe7e212630535e14d9e6db5a921629793d5da03a9fcfb0fde51615cb5a29", "", "");
