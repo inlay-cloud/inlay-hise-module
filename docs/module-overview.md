@@ -13,6 +13,10 @@ Create one unlocker for the host plugin, then start it after the plugin UI and a
 
 At startup, the module reads the saved identity and access token. Before allowing use, it validates the access token locally with the configured public key. The validation checks that the token is intact, applies to the configured product and current device, was issued in the past, and has not expired. A valid cached token therefore unlocks the plugin without a server request, which is what permits offline use until the token expires.
 
+The identity token and access token have different roles. The identity token is a persisted sign-in identity that the module can send to Inlay when it needs current access. The signed access token is the actual local authorization for the configured HISE product on the current device. The module never treats the presence of either file as sufficient by itself: an access token must pass local validation before the plugin is unlocked, and a saved identity is used only to obtain a replacement or refreshed access token from the server.
+
+The server is the authority for activation and entitlement decisions, but the HISE module does not trust a successful server response blindly. After activation or refresh, it saves the returned tokens, validates the access token with the company public key, and only then broadcasts `unlocked`. The local validation binds access to the configured `productId` and the device ID reported by HISE, and rejects tokens with an invalid signature, future issue time, or expired access. This is why a valid cached access token can continue to authorize the plugin offline, while changing the product ID or device invalidates that cached access.
+
 The unlocker exposes three states through `statusBroadcaster`:
 
 | Status | Meaning |
@@ -28,9 +32,13 @@ The unlocker exposes three states through `statusBroadcaster`:
 3. When activation succeeds, or when a saved identity needs access, the Inlay server evaluates the account's entitlement and returns current access. The module saves the returned identity and access token locally, validates the access token again, and only then broadcasts `unlocked`.
 4. After unlocking, the module schedules a refresh check. The signed access token's optional `r` claim sets the refresh age in whole days; `-1` disables age-based refresh, while a missing or invalid value defaults to one day. A temporary refresh failure leaves a still-valid token in place; a rejected identity returns the plugin to `activation_required`.
 
+Refreshing is a background maintenance operation, not a prerequisite for every protected callback. If the current access token is still valid, a temporary network or HTTP failure does not immediately lock the plugin. If access expires and cannot be renewed, the status changes away from `unlocked`, so both the UI and any protected audio or MIDI callbacks must stop relying on unlocked functionality. The refresh interval and token expiration are supplied by Inlay in the signed access token; the plugin does not configure them locally.
+
 The server is the authority for activation and entitlement decisions. The plugin does not trust a server response blindly: it uses the company public key to validate the returned access token locally before enabling protected functionality.
 
 Use the default `InlayUi` for a blocking activation screen, or drive a branded screen from the public broadcasters and methods. In either case, protect plugin-specific controls and code until the state is `unlocked`. Attach listeners and create the lock UI before `startup()`, because it can immediately broadcast the current state.
+
+`statusBroadcaster` is the HISE-facing state-change mechanism; use it to show or hide UI and to refresh project state when activation, refresh, logout, or expiry changes the host status. `isLocked()` is the lightweight guard for plugin callbacks, including audio/MIDI processing. It returns locked for every state except `STATUS_UNLOCKED`, so code that accesses protected samples, presets, controls, or processing should check it rather than infer access from whether a token file or user email exists. Keep UI actions such as activation, retry, and logout in the script/UI flow, and do not use the broadcaster payload or `getCurrentUser()` as a substitute for the access check.
 
 Expansions are separately entitled sub-products. This overview lists the related API, but implementation details belong in the [Expansion protection guide](expansions-protection-guide.md).
 
