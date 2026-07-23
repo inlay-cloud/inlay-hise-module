@@ -53,3 +53,5 @@ Thumbs.db
 
 # debug information files
 *.dwo
+
+/docs/superpowers/
