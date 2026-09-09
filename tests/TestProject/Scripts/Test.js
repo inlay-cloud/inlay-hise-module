@@ -715,6 +715,8 @@ namespace InlayTest {
             t.assertEqual("unlocker.getExpansionFilesCalls", unlocker.getExpansionFilesCalls, 1);
             t.assertEqual("meta.idToken", meta.idToken, "id-token");
             t.assertEqual("meta.productId", meta.productId, "metadata-test-product-id");
+            t.assertEqual("meta.systemStats is undefined", meta.systemStats == undefined, true);
+            t.assertEqual("meta.inlayDir is undefined", meta.inlayDir == undefined, true);
             t.assertEqual("meta.subproducts.length", meta.subproducts.length, 2);
             t.assertEqual("meta.subproducts[0].id", meta.subproducts[0].id, "01KQEN95FVR6CQCFMDD0AAAF21");
             t.assertEqual("meta.subproducts[0].version", meta.subproducts[0].version, "1.2.3");
@@ -753,6 +755,25 @@ namespace InlayTest {
 
             t.assertEqual("unlocker.getExpansionFilesCalls", unlocker.getExpansionFilesCalls, 1);
             t.assertEqual("meta.subproducts is undefined", meta.subproducts == undefined, true);
+        }
+
+        t.subName = "does not include diagnostic system or directory data for an expansion";
+        {
+            local unlocker = createMetaDataUnlocker(undefined);
+            local expansion = {
+                getProperties: function() {
+                    return {
+                        Name: "Metadata Test Expansion",
+                        Version: "1.2.3",
+                        InlayProductID: "01KQEN95FVR6CQCFMDD0FE2F21",
+                    };
+                },
+            };
+
+            local meta = unlocker.setExpMetaData({}, expansion);
+
+            t.assertEqual("expansion meta.systemStats is undefined", meta.systemStats == undefined, true);
+            t.assertEqual("expansion meta.inlayDir is undefined", meta.inlayDir == undefined, true);
         }
     }
 
