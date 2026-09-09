@@ -6,7 +6,7 @@ namespace InlayUnlocker {
     // The plugin is unlocked.
     const var STATUS_UNLOCKED = "unlocked";
     
-    const var moduleVersion = "HISE-3.0.5";
+    const var moduleVersion = "HISE-3.0.6";
     const var oneDay = 24 * 60 * 60 * 1000;
     const var ulidLength = 26;
     const var inlayProductIDProp = "InlayProductID";
@@ -577,12 +577,10 @@ namespace InlayUnlocker {
                 obj.moduleVersion = moduleVersion;
                 obj.deviceId = this.deviceID;
                 obj.os = sys.OperatingSystemName;
-                obj.systemStats = JSON.stringify(sys);
                 obj.productId = this.cfg.productId;
                 obj.productVersion = Engine.getVersion();
                 obj.productName = Engine.getName();
                 obj.isPlugin = Engine.isPlugin();
-                obj.inlayDir = this.inlayDir.toString(0);
                 obj.instanceID = this.instanceID;
                 
                 var subproducts = [];
@@ -625,12 +623,10 @@ namespace InlayUnlocker {
                 obj.moduleVersion = moduleVersion;
                 obj.deviceId = this.deviceID;
                 obj.os = sys.OperatingSystemName;
-                obj.systemStats = JSON.stringify(sys);
                 obj.productId = getExpansionProductId(exp);
                 obj.productVersion = getExpansionVersion(exp);
                 obj.productName = getExpansionName(exp);
                 obj.isPlugin = Engine.isPlugin();
-                obj.inlayDir = this.inlayDir.toString(0);
                 obj.instanceID = this.instanceID;
 
                 return obj;
