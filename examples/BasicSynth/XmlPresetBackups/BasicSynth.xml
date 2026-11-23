@@ -74,7 +74,26 @@
       <ChildProcessors/>
     </Processor>
     <Processor Type="EffectChain" ID="FX" Bypassed="0">
-      <ChildProcessors/>
+      <ChildProcessors>
+        <Processor Type="SimpleGain" ID="ActivationGain" Bypassed="0" Gain="-100.0"
+                   Delay="0.0" Width="100.0" Balance="0.0" InvertPolarity="0.0">
+          <ChildProcessors>
+            <Processor Type="ModulatorChain" ID="Gain Modulation" Bypassed="0" Intensity="1.0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="Delay Modulation" Bypassed="0" Intensity="1.0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="Width Modulation" Bypassed="0" Intensity="1.0">
+              <ChildProcessors/>
+            </Processor>
+            <Processor Type="ModulatorChain" ID="Pan Modulation" Bypassed="0" Intensity="1.0">
+              <ChildProcessors/>
+            </Processor>
+          </ChildProcessors>
+          <RoutingMatrix NumSourceChannels="2" Channel0="0" Send0="-1" Channel1="1" Send1="-1"/>
+        </Processor>
+      </ChildProcessors>
     </Processor>
     <Processor Type="GlobalModulatorContainer" ID="Global Modulator Container"
                Bypassed="0" Gain="0.25" Balance="0.0" VoiceLimit="256.0" KillFadeTime="20.0"

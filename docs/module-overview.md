@@ -113,15 +113,19 @@ function onAudioProcess(buffer)
 }
 ```
 
-Use `statusBroadcaster` rather than polling when UI or other state must react immediately:
+Use `statusBroadcaster` rather than polling when UI or other state must react immediately. Register the listener before calling `unlocker.startup()`.
 
 ```javascript
+// Add a Simple Gain effect named "ActivationGain" at the end of the master FX chain.
+const var ActivationGain = Synth.getEffect("ActivationGain");
+ActivationGain.setAttribute(ActivationGain.Gain, -100);
+
 unlocker.statusBroadcaster.addListener(
-    "project.unlockState",
-    "project.unlockState",
+    "ActivationGainListener",
+    "Mute output while locked",
     function(status)
     {
-        local isUnlocked = status == InlayUnlocker.STATUS_UNLOCKED;
+        ActivationGain.setAttribute(ActivationGain.Gain, status == InlayUnlocker.STATUS_UNLOCKED ? 0 : -100);
         // Enable or disable project-specific controls here.
     }
 );

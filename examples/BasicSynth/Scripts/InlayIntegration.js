@@ -43,4 +43,12 @@ inline function onEmailButtonControl(component, value)
     }
 }
 
+const var ActivationGain = Synth.getEffect("ActivationGain");
+ActivationGain.setAttribute(ActivationGain.Gain, -100);
+
+inlayUnlocker.statusBroadcaster.addListener("ActivationGainListener", "Mute output while locked", function(status)
+{
+    ActivationGain.setAttribute(ActivationGain.Gain, status == InlayUnlocker.STATUS_UNLOCKED ? 0 : -100);
+});
+
 inlayUnlocker.startup();
